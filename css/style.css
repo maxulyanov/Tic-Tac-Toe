@@ -1,0 +1,46 @@
+/*---------------------------
+	   RESET
+---------------------------*/
+*{
+	margin:0;
+	padding:0;
+}
+img{
+	border:none;
+}
+ul{
+    list-style: none;
+}
+h1, h2, h3, h4, h5, h6{
+    font-weight: normal;
+}
+input,select,option,button{
+	outline:0;
+	border:0;
+}
+a{
+    text-decoration: none;
+}
+label{
+	cursor: pointer;
+}
+/*---------------------------
+	   Style 
+---------------------------*/
+#wrapper{
+	width: 700px;
+	margin: 20px auto;
+}
+#field{
+	width: 220px;
+}
+#field .cell{
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+	border: 1px solid rgb(191, 191, 191);
+	float: left;
+}
+#field .cell.there{
+	cursor: default;
+}
