@@ -4,7 +4,7 @@
 		
 
 		// Глобальные переменные
-		var num = 4,
+		var num = 3,
 			countRow = 1,
 		 	countColum = 1,
 		 	globalCountR = 0,
@@ -89,9 +89,10 @@
 				victory('x');
 				$('.whose-move').text(text_Ai);
 
-				if($('.cell.there').length < (num * num) && !$('#field').hasClass('endgame')){
-					setTimeout(ai, speed_AiMove);				
-				}
+				//Запустить анализатор хода для AI
+				if(!win){
+					setTimeout(analizator, speed_AiMove);
+				}			
 			}
 		});
 
@@ -113,7 +114,7 @@
 						var combo;
 						var mark = $(elem).attr('data-mark');
 
-						for(var i = 0; i < 2; i++){
+						for(var i = 0; i < num; i++){
 							if(line == 0){
 								dataColum--;
 							}
@@ -132,13 +133,13 @@
 							combo  = $('div[data-colum ="' + dataColum + '"][data-row ="' + dataRow + '"][data-mark ="' + mark + '"]');
 							if(typeof(combo)  !== 'undefined' && $(combo).hasClass('there')){
 								checkElems.push(combo);
-								if($(checkElems).length == 2){
+								if($(checkElems).length == (num - 1)){
 									checkElems.push(elem);
 								}
 							}
 						}
 
-						if($(checkElems).length === 3){
+						if($(checkElems).length === num){
 							$(checkElems).each(function(){
 								$(this).css('background', 'red');
 							})
@@ -147,40 +148,138 @@
 
 						checkElems = [];
 					};
-
-					// В этом случае получаем ничью
-					if($('.cell.there').length == (num * num)){
-						messWin();
-						return false;
-					}
 				}
 			});
+
+			// Ничья
+			if($('.cell.there').length == (num * num)){
+				messWin();
+				return false;
+			}
 
 		};
 
 		// Сообщение о результах игры
 		function messWin(s){
-			if(s == 'n'){
-				alert('победил ПК!');
-			}
-			else if(s == 'x'){
-				alert('победил игрок!');
-			}
-			else{
-				alert('Ничья!');
-			}
 
 			win = true;
+
+			if(s == 'n'){
+				console.log('победил ПК!');
+			}
+			else if(s == 'x'){
+				console.log('победил игрок!');
+			}
+			else{
+				console.log('Ничья!');
+			}
 
 			$('#field').addClass('endgame');
 			$('.whose-move').remove();
 			$('<a href="#" class="startgame">' + text_startGame + '</a>').appendTo('#wrapper');
 		};
+	
+		var test = [];
+		var smart = false;
+		var init2;
+		function analizator() {
+			var mark = $('.there').attr('data-mark');
+			smart = false;
+			init2 = true;
+			console.log('{{{analizator}}}')
+			$('.there[data-mark="x"]').each(function(){
+				for(var i = 0; i < 4; i++){
+					if(init2)
+						innerAnalizator(this, i);
+				}
+			});
+			function innerAnalizator(elem, line) {
+				var dataRow = $(elem).attr('data-row');
+				var dataColum = $(elem).attr('data-colum');
+				var warning;
 
-		
+				outer:
+				for(var i = 0; i < num; i++){
+					if(line == 0){
+						dataColum--;
+					}
+					else if(line == 1){
+						dataRow--;
+					}
+					else if(line == 2){
+						dataColum--;
+						dataRow--;
+					}
+					else if(line == 3){
+						dataColum++;
+						dataRow--;
+					}
+					
+					warning  = $('div[data-colum ="' + dataColum + '"][data-row ="' + dataRow + '"][data-mark ="x"]');
+					if($(warning).length >= 1 && $(warning).hasClass('there')){
+						test.push(warning);
+						if($(test).length == (num - 2)){
+							test.push($(elem));
+							for(var i=0; i<test.length; i++){
+								var dataRow = $(test[i]).attr('data-row');
+								var dataColum = $(test[i]).attr('data-colum');
+
+								if(line == 0){
+									var thisElem = $('div[data-row ="' + dataRow + '"]').not('.there');
+									if(thisElem.length > 0){
+										smartAi(thisElem);
+										break outer;
+									}
+								}
+								else if(line == 1){
+									var thisElem = $('div[data-colum ="' + dataColum + '"]').not('.there');
+									if(thisElem.length > 0){
+										smartAi(thisElem);
+										break outer;
+									}
+								}
+								else if(line == 2){
+										var r = 1;
+										var c = 1;
+									for(var i = 1; i <= num; i++){
+										r = i;
+										c = i;
+										var thisElem = $('div[data-colum ="' + c + '"][data-row ="' + r + '"]').not('.there');
+										if(thisElem.length > 0){
+											smartAi(thisElem);
+											break outer;
+										}
+									}									
+								}
+								else if(line == 3){
+										var r = 1;
+										var c = num+1;
+									for(var i = 1; i <= num; i++){
+										r = i;
+										c--;
+										var thisElem = $('div[data-colum ="' + c + '"][data-row ="' + r + '"]').not('.there');
+										if(thisElem.length > 0){
+											smartAi(thisElem);
+											break outer;
+										}
+									}									
+								}
+							}							
+						}
+					}
+				}
+				test = [];
+			}
+			init2 = false;
+			console.log('------------' + smart)
+			if(!smart && !win){
+				randomAi();
+			}	
+		};
+
 
 		// Рандомный AI
-		function ai(){
+		function randomAi(){
 			var max = num * num -1;
 			var min = 0;
 			var rand = min - 0.5 + Math.random()*(max-min+1)
@@ -192,13 +291,30 @@
 				$(arrElems[rand]).attr('data-mark', 'n');
 
 				init = true;
+				$('.whose-move').text(text_Gamer);
 				victory('n');
-				$('.whose-move').text(text_Gamer)
-
+				console.log('rand')
 			}
 			else{
-				ai();
+				randomAi();
 			}
+		};
+
+		// Умный AI
+		function smartAi(elem){
+
+			$(elem).addClass('there');
+			$(elem).attr('data-mark', 'n');
+			$(elem).find('span').text('O');
+
+			init = true;
+			init2 = false;
+			smart = true;
+			$('.whose-move').text(text_Gamer)
+			$('.whose-move').text(text_Gamer);
+			victory('n');
+
+			console.log('smart')
 		};
 
 
