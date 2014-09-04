@@ -4,12 +4,14 @@
 		
 
 		// Глобальные переменные
-		var num = 3,
+		var num = 4,
 			countRow = 1,
 		 	countColum = 1,
 		 	globalCountR = 0,
 			win = false,
 			init = true,
+			smart = false,
+			init2,
 			arrElems = [],
 			checkElems = [],
 			arrColum = [];
@@ -156,43 +158,24 @@
 				messWin();
 				return false;
 			}
-
-		};
-
-		// Сообщение о результах игры
-		function messWin(s){
-
-			win = true;
-
-			if(s == 'n'){
-				console.log('победил ПК!');
-			}
-			else if(s == 'x'){
-				console.log('победил игрок!');
-			}
-			else{
-				console.log('Ничья!');
-			}
-
-			$('#field').addClass('endgame');
-			$('.whose-move').remove();
-			$('<a href="#" class="startgame">' + text_startGame + '</a>').appendTo('#wrapper');
 		};
 	
-		var test = [];
-		var smart = false;
-		var init2;
+		// Анализатор ходов соперника
 		function analizator() {
-			var mark = $('.there').attr('data-mark');
 			smart = false;
 			init2 = true;
-			console.log('{{{analizator}}}')
-			$('.there[data-mark="x"]').each(function(){
-				for(var i = 0; i < 4; i++){
-					if(init2)
-						innerAnalizator(this, i);
-				}
-			});
+			var mark;
+			for(var i = 0; i < 2; i++){
+				console.log(i);
+				i == 0 ? mark = 'n' : mark = 'x';
+				$('.there[data-mark="' + mark + '"]').each(function(){
+					for(var i = 0; i < 4; i++){
+						if(init2)
+							innerAnalizator(this, i);
+					}
+				});
+			}
+			
 			function innerAnalizator(elem, line) {
 				var dataRow = $(elem).attr('data-row');
 				var dataColum = $(elem).attr('data-colum');
@@ -215,14 +198,14 @@
 						dataRow--;
 					}
 					
-					warning  = $('div[data-colum ="' + dataColum + '"][data-row ="' + dataRow + '"][data-mark ="x"]');
+					warning  = $('div[data-colum ="' + dataColum + '"][data-row ="' + dataRow + '"][data-mark ="' + mark + '"]');
 					if($(warning).length >= 1 && $(warning).hasClass('there')){
-						test.push(warning);
-						if($(test).length == (num - 2)){
-							test.push($(elem));
-							for(var i=0; i<test.length; i++){
-								var dataRow = $(test[i]).attr('data-row');
-								var dataColum = $(test[i]).attr('data-colum');
+						checkElems.push(warning);
+						if($(checkElems).length == (num - 2)){
+							checkElems.push($(elem));
+							for(var i=0; i<checkElems.length; i++){
+								var dataRow = $(checkElems[i]).attr('data-row');
+								var dataColum = $(checkElems[i]).attr('data-colum');
 
 								if(line == 0){
 									var thisElem = $('div[data-row ="' + dataRow + '"]').not('.there');
@@ -268,10 +251,9 @@
 						}
 					}
 				}
-				test = [];
+				checkElems = [];
 			}
-			init2 = false;
-			console.log('------------' + smart)
+			
 			if(!smart && !win){
 				randomAi();
 			}	
@@ -293,7 +275,6 @@
 				init = true;
 				$('.whose-move').text(text_Gamer);
 				victory('n');
-				console.log('rand')
 			}
 			else{
 				randomAi();
@@ -313,8 +294,25 @@
 			$('.whose-move').text(text_Gamer)
 			$('.whose-move').text(text_Gamer);
 			victory('n');
+		};
 
-			console.log('smart')
+		// Сообщение о результах игры
+		function messWin(s){
+			win = true;
+
+			if(s == 'n'){
+				console.log('победил ПК!');
+			}
+			else if(s == 'x'){
+				console.log('победил игрок!');
+			}
+			else{
+				console.log('Ничья!');
+			}
+
+			$('#field').addClass('endgame');
+			$('.whose-move').remove();
+			$('<a href="#" class="startgame">' + text_startGame + '</a>').appendTo('#wrapper');
 		};
 
 
