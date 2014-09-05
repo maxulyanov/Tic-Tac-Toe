@@ -4,7 +4,7 @@
 		
 
 		// Глобальные переменные
-		var num = 4,
+		var num = 3,
 			countRow = 1,
 		 	countColum = 1,
 		 	globalCountR = 0,
@@ -154,7 +154,7 @@
 			});
 
 			// Ничья
-			if($('.cell.there').length == (num * num)){
+			if($('.cell.there').length == (num * num) && !win){
 				messWin();
 				return false;
 			}
@@ -166,7 +166,6 @@
 			init2 = true;
 			var mark;
 			for(var i = 0; i < 2; i++){
-				console.log(i);
 				i == 0 ? mark = 'n' : mark = 'x';
 				$('.there[data-mark="' + mark + '"]').each(function(){
 					for(var i = 0; i < 4; i++){
@@ -259,16 +258,15 @@
 			}	
 		};
 
-
 		// Рандомный AI
-		function randomAi(){
+		function randomAi() {
 			var max = num * num -1;
 			var min = 0;
 			var rand = min - 0.5 + Math.random()*(max-min+1)
 			rand = Math.round(rand);
 
 			if(!$(arrElems[rand]).hasClass('there')){
-				$(arrElems[rand]).text('O');
+				$(arrElems[rand]).find('span').text('O');
 				$(arrElems[rand]).addClass('there');
 				$(arrElems[rand]).attr('data-mark', 'n');
 
@@ -282,22 +280,40 @@
 		};
 
 		// Умный AI
-		function smartAi(elem){
+		function smartAi(elem) {
 
-			$(elem).addClass('there');
-			$(elem).attr('data-mark', 'n');
-			$(elem).find('span').text('O');
-
-			init = true;
-			init2 = false;
-			smart = true;
-			$('.whose-move').text(text_Gamer)
-			$('.whose-move').text(text_Gamer);
-			victory('n');
+			var rand = difficultyRand();
+			console.log(rand)
+			if(rand !== 5){
+				console.log('if')
+				$(elem).addClass('there');
+				$(elem).attr('data-mark', 'n');
+				$(elem).find('span').text('O');
+				
+				init = true;
+				init2 = false;
+				smart = true;
+				$('.whose-move').text(text_Gamer)
+				victory('n');
+			}
+			else{
+				console.log('else')
+				randomAi();
+				init2 = false;
+				smart = true;						
+			}
 		};
 
+		function difficultyRand() {
+			var min = 1;
+			var max = 5;
+			var rand = min - 0.5 + Math.random() * (max - min + 1);
+			return rand = Math.round(rand);
+		}	
+
+
 		// Сообщение о результах игры
-		function messWin(s){
+		function messWin(s) {
 			win = true;
 
 			if(s == 'n'){
