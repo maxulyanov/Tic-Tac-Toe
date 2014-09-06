@@ -8,8 +8,22 @@
 <script src="js/script.js"></script>
 </head>
 <body>
-    <div id="wrapper">
+    <div id="wrapper-game">
         <a href="#" class="startgame">Начать игру</a>
+        <div id="settings">
+			<div id="settings-difficulty">
+				<h4>Сложность игры:</h4>
+				<p><a href="#" data-difficulty="0">Упрощенная</a><a href="#" data-difficulty="1" class="active">Стандартная</a></p>
+			</div>
+			<div id="settings-field-size">
+				<h4>Размер поля:</h4>
+				<p>
+					<a href="#" class="active" data-fieldsize="3">3x3</a>
+					<a href="#" data-fieldsize="4">4x4</a>
+					<a href="#" data-fieldsize="5">5x5</a>
+				</p>
+			</div>
+        </div>
     </div>
 </body>
 </html>
