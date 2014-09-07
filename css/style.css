@@ -123,10 +123,24 @@ h3.whose-move{
 	padding: 7px 10px;
 	display: block;
 }
-#settings > div > h4{
+#settings > div > h4,
+.text-result{
 	margin-bottom: 4px;
 	color: #636363;
 }
+.text-result{
+	text-align: center;
+}
+.text-result.text-defeat span{
+	color: #FF3C17;
+}
+.text-result.text-victory span{
+	color: #49AE3C;
+}
+.text-result.text-draw span{
+	color: #000;
+}
+color: #FFCD00;
 #settings-difficulty{
 	margin-bottom: 10px;
 }

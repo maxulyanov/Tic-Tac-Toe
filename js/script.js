@@ -33,6 +33,7 @@
 			$('#field').remove();
 			$(settingsBlock).hide(400);
 			$(this).remove();
+			$('.text-result').remove();
 
 			//Получение данных для генерации
 			fieldSize = parseInt($('#settings-field-size').find('a.active').attr('data-fieldsize'));
@@ -192,7 +193,7 @@
 			});
 
 			// Ничья
-			if($('.cell.there').length == (fieldSize * fieldSize) && !win){
+			if($('.cell.there').length == (fieldSize * fieldSize) && !$('#field').hasClass('endgame')){
 				messWin();
 				return false;
 			}
@@ -356,13 +357,13 @@
 		// Сообщение о результах игры
 		function messWin(s) {
 			if(s == 'n'){
-				$(field).before('Поражение!');
+				$(field).before('<h3 class="text-result text-defeat">Результат: <span>Поражение!</span></h3>');
 			}
 			else if(s == 'x'){
-				$(field).before('Победа!');
+				$(field).before('<h3 class="text-result text-victory">Результат: <span>Победа!</span></h3>');
 			}
 			else{
-				$(field).before('Ничья!');
+				$(field).before('<h3 class="text-result text-draw">Результат: <span>Ничья!</span></h3>');
 			}
 
 			win = true;
