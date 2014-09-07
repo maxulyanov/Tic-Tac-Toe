@@ -27,21 +27,106 @@ label{
 /*---------------------------
 	   Style 
 ---------------------------*/
+body{
+	background: #F3F3F3;
+	overflow-y: scroll;
+	font-family: 'Roboto Condensed', sans-serif;
+}
+body > h1{
+	text-align: center;
+	font-size: 24px;
+	padding: 5px 0;
+	color: #42A2DC;
+	font-weight: bold;
+	background: rgb(239, 239, 239);
+	background: #F2F2F2;
+	border-bottom: 3px solid rgb(233, 233, 233);
+}
 #wrapper-game{
-	width: 700px;
-	margin: 20px auto;
+	width: 420px;
+	margin: 10px auto;
 }
 #field{
 	overflow: hidden;
+	margin: 0 auto 10px;
+	-moz-transform:rotate(-50deg);
+	-webkit-transform:rotate(-50deg);
+	transform:rotate(-10deg);
 }
 #field .cell{
 	width: 80px;
 	height: 80px;
 	cursor: pointer;
-	border: 1px solid rgb(191, 191, 191);
+	text-align: center;
+	background: #FFF;
+	border: 1px solid #F3F3F3;
 	float: left;
 }
 #field .cell.there,
 #field.endgame .cell{
 	cursor: default;
+}
+#field .cell span{
+	font-size: 64px;
+	line-height: 74px;
+}
+#field .cell[data-mark="x"] span{
+	color: #49AE3C;
+}
+#field .cell[data-mark="n"] span{
+	font-size: 74px;
+	font-weight: bold;
+	color: #FF3C17;
+	line-height: 66px;
+}
+h3.whose-move{
+	margin: 0 auto;
+	margin-bottom: 4px;
+	text-align: center;
+	color: #636363;
+}
+#settings{
+	background: #F2F2F2;
+	padding: 10px 10px 15px 10px;
+	margin-bottom: 10px;
+	border: 1px solid rgb(233, 233, 233);
+	border-bottom-width: 3px;
+}
+#settings a,
+.startgame{
+	text-decoration: none;
+	background: #FFF;
+	display: inline-block;
+	padding: 3px 10px;
+	margin-right: 3px;
+	color: #42A2DC;
+	-moz-box-shadow: 0 1px 1px #D8D8D8;
+    -webkit-box-shadow: 0 1px 1px #D8D8D8;
+    box-shadow: 0 1px 1px #D8D8D8;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px
+}
+#settings a.active,
+.startgame:hover{
+	background: #42A2DC;
+	color: #FFF;
+	-moz-transition: 0.3s;
+    -o-transition: 0.3s;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+.startgame{
+	width: 150px;
+	text-align: center;
+	margin: 0 auto;
+	padding: 7px 10px;
+	display: block;
+}
+#settings > div > h4{
+	margin-bottom: 4px;
+	color: #636363;
+}
+#settings-difficulty{
+	margin-bottom: 10px;
 }

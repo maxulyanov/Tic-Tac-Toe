@@ -18,8 +18,8 @@
 			arrColum = [];
 
 		// Переменные для быстрого изменения
-		var text_Gamer = 'Ваш ход',
-			text_Ai = 'Думаю...',
+		var text_Gamer = 'Текущий ход: Ваш ход',
+			text_Ai = 'Текущий ход: Думаю...',
 			text_startGame = 'Играть еще раз',
 			speed_AiMove = 600;
 
@@ -31,7 +31,7 @@
 			event.preventDefault();
 
 			$('#field').remove();
-			$(settingsBlock).hide();
+			$(settingsBlock).hide(400);
 			$(this).remove();
 
 			//Получение данных для генерации
@@ -76,12 +76,33 @@
 				countColum++;
 			});
 
-			// Добавление поля и текста в DOM
-			$(field).appendTo($('#wrapper-game'));
-			$('<h3 class="whose-move">' + text_Gamer + '</h3>').appendTo($('#wrapper-game'));
+			// Добавление поля с игрой и текста в DOM + анимация
+			$(field).css({
+				'position' : 'relative',
+				top: -600
+			});
 
+			$(field).appendTo($('#wrapper-game'));
+
+			$(field).animate({
+				top: 0
+			}, 600, function(){
+				$(field).css({
+					'-moz-transform' : 'rotate(-0deg)',
+					'-webkit-transform' : 'rotate(-0deg)',
+					'transform' : 'rotate(-0deg)',
+					'-moz-transition' : '0.3s',
+					'-o-transition' : '0.3s',
+					'-webkit-transition' : '0.3s',
+					'transition' : '0.3s'
+				});
+			});
+
+			$('<h3 class="whose-move">' + text_Gamer + '</h3>').prependTo($('#wrapper-game'));
+
+			// Расчет ширины поля в зависимости от настроек
 			var width = $('.cell').width() * fieldSize;
-			$('#field').css('width', width+10);
+			$('#field, .whose-move').css('width', width+10);
 
 		});
 	
@@ -91,11 +112,12 @@
 		};
 
 		// Клик игрока по полю
-		$(document).on('click', '.cell', function() {
+		$(document).on('click', '.cell', function(event) {
+			event.preventDefault();
 			if(!$(this).hasClass('there') && !$(field).hasClass('endgame') && init){
 				$(this).addClass('there');
 				$(this).attr('data-mark', 'x');
-				$(this).find('span').text('X');
+				$(this).find('span').text('×');
 
 				init = false;
 				victory('x');
@@ -109,7 +131,8 @@
 		});
 
 		// Переключение активности для кнопок настроек
-		$('#settings-difficulty, #settings-field-size').find('a').on('click', function() {
+		$('#settings-difficulty, #settings-field-size').find('a').on('click', function(event) {
+			event.preventDefault();
 			$(this).parent().parent('div').find('a').removeClass('active');
 			$(this).addClass('active');
 		});
@@ -281,7 +304,7 @@
 			rand = Math.round(rand);
 
 			if(!$(arrElems[rand]).hasClass('there')){
-				$(arrElems[rand]).find('span').text('O');
+				$(arrElems[rand]).find('span').text('○');
 				$(arrElems[rand]).addClass('there');
 				$(arrElems[rand]).attr('data-mark', 'n');
 
@@ -300,7 +323,7 @@
 			if(rand !== 5){
 				$(elem).addClass('there');
 				$(elem).attr('data-mark', 'n');
-				$(elem).find('span').text('O');
+				$(elem).find('span').text('○');
 				
 				init = true;
 				init2 = false;
@@ -333,13 +356,13 @@
 		// Сообщение о результах игры
 		function messWin(s) {
 			if(s == 'n'){
-				console.log('победил AI!');
+				$(field).before('Поражение!');
 			}
 			else if(s == 'x'){
-				console.log('победил игрок!');
+				$(field).before('Победа!');
 			}
 			else{
-				console.log('Ничья!');
+				$(field).before('Ничья!');
 			}
 
 			win = true;
@@ -347,7 +370,7 @@
 			$('#field').addClass('endgame');
 			$('.whose-move').remove();
 			$('<a href="#" class="startgame">' + text_startGame + '</a>').appendTo('#wrapper-game');
-			$(settingsBlock).show();
+			$(settingsBlock).show(400);
 			resetData();
 		};
 
