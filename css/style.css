@@ -159,10 +159,14 @@ h3.whose-move{
 	overflow: hidden;
 	border-bottom-width: 1px; 
 }
+<<<<<<< HEAD
 #stats-game > div{
 	overflow: hidden;
 } 
 #stats-game > div > h3,
+=======
+#stats-game > h3,
+>>>>>>> f10d70175e2f9601633f98b5ed26e1a7365921cc
 #settings > h3{
 	text-align: center;
 	margin-bottom: 10px;
@@ -170,7 +174,11 @@ h3.whose-move{
 	color: #636363;
 	background: #ECECEC;
 }
+<<<<<<< HEAD
 #stats-game > div > div{
+=======
+#stats-game > div{
+>>>>>>> f10d70175e2f9601633f98b5ed26e1a7365921cc
 	color: #FFF;
 	padding-top: 7px;
 	padding-bottom: 7px;
@@ -180,18 +188,25 @@ h3.whose-move{
 }
 #stats-game .text-stats-all{
 	background: #42A2DC;
+<<<<<<< HEAD
 	border-bottom: 2px solid #4599CB;
+=======
+>>>>>>> f10d70175e2f9601633f98b5ed26e1a7365921cc
 	float:none;
 	width:100%;
 	margin-bottom: 3px;
 }
 #stats-game .text-stats-win{
 	background: #49AE3C;
+<<<<<<< HEAD
 	border-bottom: 2px solid #3FA432;
+=======
+>>>>>>> f10d70175e2f9601633f98b5ed26e1a7365921cc
 }
 #stats-game .text-stats-defeat{
 	background: #FF3C17;
 	width: 134px;
+<<<<<<< HEAD
 	border-bottom: 2px solid #E33210;
 }
 #stats-game .text-stats-draw{
@@ -296,3 +311,9 @@ h3.whose-move{
 	font-size: 12px;
 	left: 3px;
 }
+=======
+}
+#stats-game .text-stats-draw{
+	background: #C0C0C0;
+}
+>>>>>>> f10d70175e2f9601633f98b5ed26e1a7365921cc

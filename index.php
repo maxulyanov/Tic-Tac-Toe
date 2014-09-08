@@ -34,6 +34,7 @@
         </div>
         <a href="#" class="startgame">Начать игру</a>
 		<div id="stats-game">
+<<<<<<< HEAD:index.php
 			<div>
 				<h3>Общая статистика:</h3>
 				<?php
@@ -69,6 +70,13 @@
 					</div>
 				</div>
 			</div>
+=======
+			<h3>Общая статистика:</h3>
+			<?php
+				$stats = getStats();
+				echo $stats;
+			?>
+>>>>>>> f10d70175e2f9601633f98b5ed26e1a7365921cc:index.php
 		</div>
     </div>
 </body>

@@ -375,8 +375,12 @@
 				url: "php/stats.php",
 				data:({s: messInt}),
 				success: function(response){
+<<<<<<< HEAD
 					$('#stats-game').find('div').eq(0).empty().html(response).prepend('<h3>Общая статистика:</h3>');
 					infoGraph();
+=======
+					$('#stats-game').empty().html(response).prepend('<h3>Общая статистика:</h3>');
+>>>>>>> f10d70175e2f9601633f98b5ed26e1a7365921cc
 				}
 			});
 
