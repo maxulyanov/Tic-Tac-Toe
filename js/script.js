@@ -83,7 +83,7 @@
 				top: -600
 			});
 
-			$(field).appendTo($('#wrapper-game'));
+			$('#stats-game').before($(field));
 
 			$(field).animate({
 				top: 0
@@ -182,7 +182,7 @@
 
 						if($(checkElems).length === fieldSize){
 							$(checkElems).each(function() {
-								$(this).css('background', 'red');
+								$(this).css('background', '#FEFFEC');
 							})
 							messWin(sign);
 						}
@@ -356,24 +356,80 @@
 
 		// Сообщение о результах игры
 		function messWin(s) {
-			if(s == 'n'){
-				$(field).before('<h3 class="text-result text-defeat">Результат: <span>Поражение!</span></h3>');
-			}
-			else if(s == 'x'){
+			var messInt;
+			if(s == 'x'){
 				$(field).before('<h3 class="text-result text-victory">Результат: <span>Победа!</span></h3>');
+				messInt = 2;
+			}
+			else if(s == 'n'){
+				$(field).before('<h3 class="text-result text-defeat">Результат: <span>Поражение!</span></h3>');
+				messInt = 3;
 			}
 			else{
 				$(field).before('<h3 class="text-result text-draw">Результат: <span>Ничья!</span></h3>');
+				messInt = 4;
 			}
+			
+			$.ajax({
+				type: "POST",
+				url: "php/stats.php",
+				data:({s: messInt}),
+				success: function(response){
+					$('#stats-game').find('div').eq(0).empty().html(response).prepend('<h3>Общая статистика:</h3>');
+					infoGraph();
+				}
+			});
 
 			win = true;
 
 			$('#field').addClass('endgame');
 			$('.whose-move').remove();
-			$('<a href="#" class="startgame">' + text_startGame + '</a>').appendTo('#wrapper-game');
+			$(field).after($('<a href="#" class="startgame">' + text_startGame + '</a>'));
 			$(settingsBlock).show(400);
 			resetData();
 		};
+
+		//
+		function infoGraph() {
+
+			$('#info-grid > div > span').css('height', 0);
+
+			var allGame = $('.text-stats-all').text();
+			allGame = allGame.split(' ');
+			allGame = allGame[allGame.length -1];
+
+			var allGameLine1 = $('.text-stats-win').text();
+			allGameLine1 = allGameLine1.split(' ');
+			allGameLine1 = allGameLine1[allGameLine1.length -1];
+
+			var allGameLine2 = $('.text-stats-defeat').text();
+			allGameLine2 = allGameLine2.split(' ');
+			allGameLine2 = allGameLine2[allGameLine2.length -1];
+
+			var allGameLine3 = $('.text-stats-draw').text();
+			allGameLine3 = allGameLine3.split(' ');
+			allGameLine3 = allGameLine3[allGameLine3.length -1];
+
+			var heightL1 = allGameLine1 / allGame * 100;
+			heightL1 = heightL1.toFixed() + '%';
+			var heightL2 = allGameLine2 / allGame * 100;
+			heightL2 = heightL2.toFixed() + '%';
+			var heightL3 = allGameLine3 / allGame * 100;
+			heightL3 = heightL3.toFixed() + '%';
+
+			$('.info-graph-line-1').animate({
+				height : heightL1
+			}, 400).html('<span>' + heightL1 + '</span>');
+
+			$('.info-graph-line-2').animate({
+				height : heightL2
+			}, 400).html('<span>' + heightL2 + '</span>');
+
+			$('.info-graph-line-3').animate({
+				height : heightL3
+			}, 400).html('<span>' + heightL3 + '</span>');
+		};
+		infoGraph();
 
 		// Сброс глобальных переменных в начальное состояние
 		function resetData() {

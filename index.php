@@ -1,3 +1,6 @@
+<?php
+	require "php/stats.php";
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +15,7 @@
 	<h1>Игра &laquo;крестики-нолики&raquo;</h1>
     <div id="wrapper-game">
         <div id="settings">
+        	<h3>Настройки игры:</h3>
 			<div id="settings-difficulty">
 				<h4>Сложность игры:</h4>
 				<p>
@@ -29,6 +33,43 @@
 			</div>
         </div>
         <a href="#" class="startgame">Начать игру</a>
+		<div id="stats-game">
+			<div>
+				<h3>Общая статистика:</h3>
+				<?php
+					$stats = getStats();
+					echo $stats;
+				?>
+			</div>
+			<div id="info-graph">
+				<h3>Инфографика:</h3>
+				<div id="info-grid">
+					<span class="line-x line-x-1">
+						<span>0</span>
+					</span>
+					<span class="line-x line-x-2">
+						<span>20</span>
+					</span>
+					<span class="line-x line-x-3">
+						<span>40</span>
+					</span>
+					<span class="line-x line-x-4">
+						<span>60</span>
+					</span>
+					<span class="line-x line-x-5">
+						<span>80</span>
+					</span>
+					<span class="line-x line-x-6">
+						<span>100</span>
+					</span>
+					<div>
+						<span class="info-graph-line-1"><span></span></span>
+						<span class="info-graph-line-2"><span></span></span>
+						<span class="info-graph-line-3"><span></span></span>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
 </body>
 </html>
