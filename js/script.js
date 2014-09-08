@@ -83,7 +83,7 @@
 				top: -600
 			});
 
-			$(field).appendTo($('#wrapper-game'));
+			$('#stats-game').before($(field));
 
 			$(field).animate({
 				top: 0
@@ -182,7 +182,7 @@
 
 						if($(checkElems).length === fieldSize){
 							$(checkElems).each(function() {
-								$(this).css('background', 'red');
+								$(this).css('background', '#FEFFEC');
 							})
 							messWin(sign);
 						}
@@ -356,21 +356,34 @@
 
 		// Сообщение о результах игры
 		function messWin(s) {
-			if(s == 'n'){
-				$(field).before('<h3 class="text-result text-defeat">Результат: <span>Поражение!</span></h3>');
-			}
-			else if(s == 'x'){
+			var messInt;
+			if(s == 'x'){
 				$(field).before('<h3 class="text-result text-victory">Результат: <span>Победа!</span></h3>');
+				messInt = 2;
+			}
+			else if(s == 'n'){
+				$(field).before('<h3 class="text-result text-defeat">Результат: <span>Поражение!</span></h3>');
+				messInt = 3;
 			}
 			else{
 				$(field).before('<h3 class="text-result text-draw">Результат: <span>Ничья!</span></h3>');
+				messInt = 4;
 			}
+			
+			$.ajax({
+				type: "POST",
+				url: "php/stats.php",
+				data:({s: messInt}),
+				success: function(response){
+					$('#stats-game').empty().html(response).prepend('<h3>Общая статистика:</h3>');
+				}
+			});
 
 			win = true;
 
 			$('#field').addClass('endgame');
 			$('.whose-move').remove();
-			$('<a href="#" class="startgame">' + text_startGame + '</a>').appendTo('#wrapper-game');
+			$(field).after($('<a href="#" class="startgame">' + text_startGame + '</a>'));
 			$(settingsBlock).show(400);
 			resetData();
 		};
