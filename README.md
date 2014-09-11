@@ -12,4 +12,4 @@
 - IE8+
 
 ### Посмотреть
-<a href="http://example.web-ulyanov.ru/frontend/tic-tac-toe/">Играть</a>
+Посмотреть игру можно по<a href="http://example.web-ulyanov.ru/frontend/tic-tac-toe/">ссылке</a>
